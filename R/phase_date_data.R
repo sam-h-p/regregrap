@@ -80,7 +80,7 @@ phase_date_data <- function(x, log_level = futile.logger::WARN,
   }
 
   futile.logger::flog.debug('Checking x contains a date column...')
-  if (!'date' %in% colnames(x)) stop("x must contain date column")
+  if (!'entry.timestamp' %in% colnames(x)) stop("x must contain date column")
 
   futile.logger::flog.debug('Checking x contains a phase column...')
   if (!'phase' %in% colnames(x)) stop("x must contain phase column")
@@ -110,13 +110,13 @@ phase_date_data <- function(x, log_level = futile.logger::WARN,
 
   futile.logger::flog.debug('Checking years in a sensible range (2015:2025)...')
 
-  if (any(lubridate::year(regreg$date) < 2016)) {
+  if (any(lubridate::year(regreg$entry.timestamp) < 2016)) {
     futile.logger::flog.warn("The dates are not in a sensible range, have they been
                              read in correctly?")
   }
 
   # hopefully moved beyond RAP by 2025...
-  if (any(lubridate::year(regreg$date) > 2025)) {
+  if (any(lubridate::year(regreg$entry.timestamp) > 2025)) {
     futile.logger::flog.warn("The dates look dodgy,
                              are you still using RAP in 2025?")
   }
@@ -152,24 +152,24 @@ phase_date_data <- function(x, log_level = futile.logger::WARN,
   # EDA
   # some people like to eyeball stuff
   if (eda == TRUE) {
-    plot(rev(regreg$date),
+    plot(rev(regreg$entry.timestamp),
          ylab = "Date published",
          xlab = "Cumulative count of published registers")
 
   }
 
   # Drop unnecessary columns
-  x <- x[, c("register", "phase", "date")]
+  x <- x[, c("register", "phase", "entry.timestamp")]
   # Define the class here ----
 
   structure(
     list(
       df = x,
       colnames = colnames(x),
-      type = colnames(x)[!colnames(x) %in% c('date','phase', 'register')],
+      type = colnames(x)[!colnames(x) %in% c('entry.timestamp','phase', 'register')],
       phase_levels = levels(x$phase),
       phase_set = phase_set,
-      yq = zoo::as.yearqtr(x$date, format = "%Y-%m-%d")
+      yq = zoo::as.yearqtr(x$entry.timestamp, format = "%Y-%m-%d")
     ),
     class = "phase_date_data")
 }
