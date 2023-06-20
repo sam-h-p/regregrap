@@ -5,7 +5,7 @@
 \alias{regreg}
 \title{GOV.UK register register.}
 \format{
-An object of class \code{data.frame} with 51 rows and 10 columns.
+An object of class \code{data.frame} with 51 rows and 9 columns.
 }
 \usage{
 regreg
