@@ -26,6 +26,11 @@
 
 fivereg_recent <- function(x, n = 5){
 
+  out <- tryCatch(
+    expr = {
+
+  #####
+
   # take the df slot and sort by desc published date
   # sort by register name (alphabetical)
 
@@ -53,5 +58,21 @@ fivereg_recent <- function(x, n = 5){
   output <- paste(df_n, collapse = ", ")
 
   return(output)
+
+  #####
+    },
+ warning = function() {
+
+   w <- warnings()
+   warning('Warning produced running fivereg_recent():', w)
+
+ },
+ error = function(e)  {
+
+   stop('Error produced running fivereg_recent():', e)
+
+ },
+ finally = {}
+  )
 
 }
